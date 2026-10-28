@@ -1,39 +1,37 @@
-
-import { useState, useEffect } from 'react';
-import { getStations, searchTrains, bookTicket } from '../api';
-import './SearchBook.css';
+import { useState, useEffect } from "react";
+import { getStations, searchTrains, bookTicket } from "../api";
+import "./SearchBook.css";
 
 export default function SearchBook({ passenger }) {
   const [stations, setStations] = useState([]);
-  const [src, setSrc] = useState('');
-  const [dest, setDest] = useState('');
-  const [date, setDate] = useState('2026-11-01');
+  const [src, setSrc] = useState("");
+  const [dest, setDest] = useState("");
+  const [date, setDate] = useState("2026-11-01");
   const [trains, setTrains] = useState([]);
-  const [payment, setPayment] = useState('UPI');
-  const [message, setMessage] = useState('');
+  const [payment, setPayment] = useState("UPI");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookingId, setBookingId] = useState(null);
-  
 
   useEffect(() => {
     getStations()
       .then(setStations)
-      .catch(() => setMessage('Unable to load stations. Please refresh.'));
+      .catch(() => setMessage("Unable to load stations. Please refresh."));
   }, []);
 
   const search = async () => {
     if (!src || !dest || !date) {
-      setMessage('Please select your source, destination and journey date.');
+      setMessage("Please select your source, destination and journey date.");
       return;
     }
 
     if (src === dest) {
-      setMessage('Source and destination must be different.');
+      setMessage("Source and destination must be different.");
       return;
     }
 
     setLoading(true);
-    setMessage('');
+    setMessage("");
     setBookingId(null);
 
     try {
@@ -41,7 +39,7 @@ export default function SearchBook({ passenger }) {
       setTrains(results);
     } catch (err) {
       setTrains([]);
-      setMessage(err.message || 'Unable to search trains. Please try again.');
+      setMessage(err.message || "Unable to search trains. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -49,7 +47,7 @@ export default function SearchBook({ passenger }) {
 
   const book = async (schedule_id) => {
     setLoading(true);
-    setMessage('');
+    setMessage("");
 
     try {
       const result = await bookTicket({
@@ -62,10 +60,10 @@ export default function SearchBook({ passenger }) {
 
       setBookingId(result.reservation_id);
       setMessage(
-        `Ticket booked successfully! Seat ${result.seat_number} · ₹${result.total_fare}`
+        `Ticket booked successfully! Seat ${result.seat_number} · ₹${result.total_fare}`,
       );
     } catch (err) {
-      setMessage(err.message || 'Booking failed. Please try again.');
+      setMessage(err.message || "Booking failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -85,7 +83,9 @@ export default function SearchBook({ passenger }) {
           <h2>Where would you like to go?</h2>
           <p>Discover trains, plan your journey and book your next trip.</p>
         </div>
-        <div className="hero-train" aria-hidden="true">🚆</div>
+        <div className="hero-train" aria-hidden="true">
+          🚆
+        </div>
       </section>
 
       <section className="journey-panel">
@@ -109,7 +109,9 @@ export default function SearchBook({ passenger }) {
             </div>
           </label>
 
-          <div className="route-connector" aria-hidden="true">→</div>
+          <div className="route-connector" aria-hidden="true">
+            →
+          </div>
 
           <label className="field-group">
             <span>TO</span>
@@ -139,17 +141,17 @@ export default function SearchBook({ passenger }) {
             onClick={search}
             disabled={loading}
           >
-            {loading ? 'Please wait...' : '⌕  Search Trains'}
+            {loading ? "Please wait..." : "⌕  Search Trains"}
           </button>
         </div>
       </section>
 
       {message && (
         <div
-          className={`booking-alert ${bookingId ? 'alert-success' : 'alert-info'}`}
+          className={`booking-alert ${bookingId ? "alert-success" : "alert-info"}`}
           role="status"
         >
-          <span>{bookingId ? '✓' : 'ℹ'}</span>
+          <span>{bookingId ? "✓" : "ℹ"}</span>
           <div>
             {message}
             {bookingId && (
@@ -165,8 +167,8 @@ export default function SearchBook({ passenger }) {
             <h3>Available trains</h3>
             <p>
               {trains.length > 0
-                ? `${trains.length} train${trains.length === 1 ? '' : 's'} found for your journey`
-                : 'Choose your route to explore available trains.'}
+                ? `${trains.length} train${trains.length === 1 ? "" : "s"} found for your journey`
+                : "Choose your route to explore available trains."}
             </p>
           </div>
           {trains.length > 0 && (
@@ -191,7 +193,7 @@ export default function SearchBook({ passenger }) {
                   <h4>{train.train_name}</h4>
                   <p>
                     Train No. {train.train_number}
-                    {train.train_type ? ` · ${train.train_type}` : ''}
+                    {train.train_type ? ` · ${train.train_type}` : ""}
                   </p>
                 </div>
               </div>
@@ -207,7 +209,7 @@ export default function SearchBook({ passenger }) {
                 <span className="route-label">Departure</span>
                 <span className="route-station">
                   {stations.find((s) => String(s.station_id) === String(src))
-                    ?.station_code || 'Source'}
+                    ?.station_code || "Source"}
                 </span>
               </div>
 
@@ -222,7 +224,7 @@ export default function SearchBook({ passenger }) {
                 <span className="route-label">Arrival</span>
                 <span className="route-station">
                   {stations.find((s) => String(s.station_id) === String(dest))
-                    ?.station_code || 'Destination'}
+                    ?.station_code || "Destination"}
                 </span>
               </div>
             </div>
@@ -252,7 +254,7 @@ export default function SearchBook({ passenger }) {
                   onClick={() => book(train.schedule_id)}
                   disabled={loading}
                 >
-                  {loading ? 'Please wait...' : 'Book Ticket →'}
+                  {loading ? "Please wait..." : "Book Ticket →"}
                 </button>
               </div>
             </div>
