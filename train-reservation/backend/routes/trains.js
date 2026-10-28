@@ -1,9 +1,9 @@
-const router = require('express').Router();
-const db = require('../db');
+const router = require("express").Router();
+const db = require("../db");
 
 // GET /api/trains/search?src=1&dest=4&date=2026-11-01
 // A train matches if it halts at BOTH stations, source comes before destination.
-router.get('/search', async (req, res) => {
+router.get("/search", async (req, res) => {
   const { src, dest, date } = req.query;
 
   const [rows] = await db.query(
@@ -17,7 +17,7 @@ router.get('/search', async (req, res) => {
      JOIN train_halt h2 ON h2.train_id = t.train_id AND h2.station_id = ?
      WHERE h1.seq_number < h2.seq_number
        AND s.journey_date = ?`,
-    [src, dest, date]
+    [src, dest, date],
   );
   res.json(rows);
 });
