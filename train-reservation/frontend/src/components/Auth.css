@@ -1,0 +1,155 @@
+/* ---------- Page background + centering ---------- */
+.auth-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Roboto,
+    sans-serif;
+  /* Dark overlay on top of the photo for readability.
+     Swap the URL for a local image: url('../assets/train-bg.jpg') */
+  background:
+    linear-gradient(135deg, rgba(10, 25, 60, 0.75), rgba(20, 60, 120, 0.55)),
+    url("https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1920&q=80")
+      center / cover no-repeat,
+    #0f2a5c; /* fallback if image fails to load */
+}
+
+/* ---------- Card ---------- */
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: 36px 32px 28px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  animation: auth-fade-in 0.5s ease;
+}
+
+@keyframes auth-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-brand {
+  margin: 0;
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #0f2a5c;
+  letter-spacing: 0.3px;
+}
+
+.auth-title {
+  margin: 6px 0 24px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* ---------- Form ---------- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-form input,
+.auth-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: #111827;
+  background: #f9fafb;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+}
+
+.auth-form input:hover,
+.auth-form select:hover {
+  border-color: #9ca3af;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  background: #fff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+/* ---------- Button ---------- */
+.auth-btn {
+  margin-top: 6px;
+  padding: 13px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #fff;
+  border: none;
+  border-radius: 999px; /* pill shape */
+  cursor: pointer;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    filter 0.2s;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.45);
+}
+
+.auth-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+}
+
+/* ---------- Toggle link + error ---------- */
+.auth-link {
+  margin: 20px 0 0;
+  text-align: center;
+  font-size: 0.92rem;
+  color: #2563eb;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.auth-link:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+.auth-error {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  text-align: center;
+  color: #b91c1c;
+  background: #fee2e2;
+  border-radius: 8px;
+}

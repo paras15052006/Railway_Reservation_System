@@ -65,21 +65,24 @@ CREATE TABLE reservation (
   FOREIGN KEY (dest_station_id) REFERENCES station(station_id)
 );
 
+
 CREATE TABLE payment (
   payment_id     INT AUTO_INCREMENT PRIMARY KEY,
-  reservation_id INT NOT NULL,
+  reservation_id INT NOT NULL UNIQUE,
   transaction_id VARCHAR(40) NOT NULL,
   amount         DECIMAL(10,2),
-  payment_status VARCHAR(20),     -- Paid / Refunded
-  payment_method VARCHAR(20),     -- UPI / Card / NetBanking
+  payment_status VARCHAR(20),
+  payment_method VARCHAR(20),
   payment_date   DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id)
+  FOREIGN KEY (reservation_id)
+    REFERENCES reservation(reservation_id)
 );
 
 CREATE TABLE cancellation (
   cancellation_id INT AUTO_INCREMENT PRIMARY KEY,
-  reservation_id  INT NOT NULL,
+  reservation_id  INT NOT NULL UNIQUE,
   reason          VARCHAR(255),
   refund_amount   DECIMAL(10,2),
-  FOREIGN KEY (reservation_id) REFERENCES reservation(reservation_id)
+  FOREIGN KEY (reservation_id)
+    REFERENCES reservation(reservation_id)
 );

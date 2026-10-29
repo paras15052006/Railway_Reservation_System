@@ -1,0 +1,574 @@
+/* Railway search and booking page */
+.railway-page {
+  --railway-blue: #1769e0;
+  --railway-dark: #14233d;
+  --railway-muted: #728096;
+  color: var(--railway-dark);
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 0 35px;
+}
+
+.railway-page * {
+  box-sizing: border-box;
+}
+
+.railway-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 190px;
+  padding: 32px 38px;
+  margin-bottom: 25px;
+  border-radius: 20px;
+  color: white;
+  background: linear-gradient(115deg, #123b83, #1769e0 68%, #53a4ff);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-tag {
+  display: inline-block;
+  padding: 7px 11px;
+  margin-bottom: 13px;
+  border: 1px solid #ffffff4d;
+  border-radius: 20px;
+  background: #ffffff18;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.railway-hero h2 {
+  margin: 0 0 10px;
+  color: white;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.2;
+}
+
+.railway-hero p {
+  margin: 0;
+  color: #e2edff;
+  font-size: 14px;
+}
+
+.hero-train {
+  font-size: 85px;
+  transform: rotate(-4deg);
+  filter: drop-shadow(0 12px 12px #102b5540);
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.journey-panel {
+  padding: 26px;
+  margin-bottom: 30px;
+  border: 1px solid #e5eaf2;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 28px #162c4c0b;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 24px;
+}
+
+.heading-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  color: #1769e0;
+  background: #eaf2ff;
+  font-size: 24px;
+}
+
+.section-heading h3,
+.results-heading h3 {
+  margin: 0 0 5px;
+  color: #14233d;
+  font-size: 19px;
+}
+
+.section-heading p,
+.results-heading p {
+  margin: 0;
+  color: #728096;
+  font-size: 13px;
+}
+
+.journey-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 13px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.field-group > span {
+  color: #69778d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.field-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 49px;
+  padding: 0 11px;
+  border: 1px solid #dce3ed;
+  border-radius: 10px;
+  background: #fbfcfe;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.field-control:focus-within {
+  border-color: #1769e0;
+  box-shadow: 0 0 0 3px #1769e01c;
+}
+
+.field-icon {
+  flex-shrink: 0;
+  color: #1769e0;
+  font-size: 20px;
+}
+
+.field-control select,
+.field-control input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  color: #24344e;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+}
+
+.route-connector {
+  align-self: center;
+  padding-top: 22px;
+  color: #1769e0;
+  text-align: center;
+  font-size: 20px;
+}
+
+.search-trains-btn,
+.book-ticket-btn {
+  min-height: 47px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: #1769e0;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.search-trains-btn:hover,
+.book-ticket-btn:hover {
+  background: #1054bd;
+  box-shadow: 0 5px 14px #1769e033;
+  transform: translateY(-1px);
+}
+
+.search-trains-btn:disabled,
+.book-ticket-btn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+  transform: none;
+}
+
+.booking-alert {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 15px 17px;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.booking-alert > span {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.booking-alert p {
+  margin: 4px 0 0;
+}
+
+.alert-success {
+  border: 1px solid #b8e7ce;
+  color: #126b43;
+  background: #effbf4;
+}
+
+.alert-info {
+  border: 1px solid #d9e6fa;
+  color: #214f91;
+  background: #f1f6ff;
+}
+
+.results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 17px;
+}
+
+.results-count {
+  padding: 8px 12px;
+  border-radius: 20px;
+  color: #1769e0;
+  background: #eaf2ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.empty-trains {
+  padding: 40px 18px;
+  border: 1px dashed #d4dfed;
+  border-radius: 16px;
+  background: #fbfcff;
+  text-align: center;
+}
+
+.empty-train-icon {
+  margin-bottom: 12px;
+  font-size: 42px;
+}
+
+.empty-trains h3 {
+  margin: 0 0 9px;
+  font-size: 17px;
+}
+
+.empty-trains p {
+  margin: 0;
+  color: #728096;
+  font-size: 13px;
+}
+
+.train-card {
+  overflow: hidden;
+  margin-bottom: 17px;
+  border: 1px solid #e2e8f1;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 5px 20px #162c4c08;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.train-card:hover {
+  border-color: #a9c9fa;
+  box-shadow: 0 9px 25px #162c4c12;
+  transform: translateY(-2px);
+}
+
+.train-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 19px 22px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.train-identity {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.train-icon {
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: #edf4ff;
+  font-size: 24px;
+}
+
+.train-identity h4 {
+  margin: 0 0 5px;
+  color: #182b48;
+  font-size: 15px;
+}
+
+.train-identity p {
+  margin: 0;
+  color: #728096;
+  font-size: 12px;
+}
+
+.train-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 20px;
+  color: #17834d;
+  background: #eaf9f0;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #20ae68;
+}
+
+.train-route {
+  display: grid;
+  grid-template-columns: 1fr minmax(80px, 1.2fr) 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 25px;
+}
+
+.route-point {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.route-destination {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.route-time {
+  color: #14233d;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+.route-label {
+  color: #728096;
+  font-size: 11px;
+}
+
+.route-station {
+  color: #1769e0;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.route-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.route-line span {
+  height: 2px;
+  flex: 1;
+  background: #c9d9f3;
+}
+
+.route-line small {
+  color: #8290a4;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.train-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 22px;
+  border-top: 1px solid #edf0f5;
+  background: #fafcff;
+}
+
+.fare-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fare-block > span,
+.fare-block > small {
+  color: #728096;
+  font-size: 11px;
+}
+
+.fare-block strong {
+  color: #14233d;
+  font-size: 25px;
+}
+
+.booking-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.payment-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.payment-field > span {
+  color: #728096;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.payment-field select {
+  min-height: 43px;
+  max-width: 150px;
+  padding: 0 10px;
+  border: 1px solid #dce3ed;
+  border-radius: 9px;
+  outline: none;
+  color: #24344e;
+  background: white;
+  font-size: 12px;
+}
+
+.loading-message {
+  padding: 20px;
+  color: #1769e0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 950px) {
+  .journey-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .route-connector {
+    display: none;
+  }
+
+  .search-trains-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .railway-page {
+    padding-top: 4px;
+  }
+
+  .railway-hero {
+    min-height: 165px;
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .railway-hero h2 {
+    font-size: 24px;
+  }
+
+  .railway-hero p {
+    max-width: 250px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .hero-train {
+    margin-left: 8px;
+    font-size: 46px;
+  }
+
+  .journey-panel {
+    padding: 19px 15px;
+  }
+
+  .journey-form {
+    grid-template-columns: 1fr;
+  }
+
+  .field-control {
+    height: 46px;
+  }
+
+  .train-card-top {
+    padding: 15px;
+  }
+
+  .train-route {
+    gap: 10px;
+    padding: 21px 15px;
+  }
+
+  .route-time {
+    font-size: 20px;
+  }
+
+  .route-line {
+    gap: 4px;
+  }
+
+  .route-line small {
+    font-size: 7px;
+  }
+
+  .train-card-bottom {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 17px 15px;
+  }
+
+  .booking-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .payment-field select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .book-ticket-btn {
+    width: 100%;
+  }
+}
