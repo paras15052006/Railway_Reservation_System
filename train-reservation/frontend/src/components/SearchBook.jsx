@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getStations, searchTrains, bookTicket } from '../api';
+import TrainSearch from './TrainSearch';
 
 export default function SearchBook({ passenger }) {
   const [stations, setStations] = useState([]);
