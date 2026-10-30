@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getStations, searchTrains, bookTicket } from "../api";
+import { getStations, searchTrains, bookTicket, getAllTrains } from "../api";
 import "./SearchBook.css";
 
 const today = new Date().toLocaleDateString("en-CA");
@@ -16,6 +16,8 @@ export default function SearchBook({ passenger }) {
   const [bookingId, setBookingId] = useState(null);
 
   const [searched, setSearched] = useState(false);
+  const [allTrains, setAllTrains] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     getStations()
@@ -77,6 +79,20 @@ export default function SearchBook({ passenger }) {
       setLoading(false);
     }
   };
+
+    const toggleAllTrains = async () => {
+    if (showAll) {
+      setShowAll(false);
+      return;
+    }
+    try {
+      setAllTrains(await getAllTrains());
+      setShowAll(true);
+    } catch (err) {
+      setMessage(err.message || "Unable to load trains.");
+    }
+  };
+
 
   const stationOptions = stations.map((station) => (
     <option key={station.station_id} value={station.station_id}>
@@ -154,6 +170,16 @@ export default function SearchBook({ passenger }) {
             {loading ? "Please wait..." : "⌕  Search Trains"}
           </button>
         </div>
+
+              <button
+          type="button"
+          onClick={toggleAllTrains}
+          style={{ marginTop: "12px" }}
+        >
+          {showAll ? "Hide all trains" : "Show all trains"}
+        </button>
+
+
       </section>
 
       {message && (
@@ -170,6 +196,44 @@ export default function SearchBook({ passenger }) {
           </div>
         </div>
       )}
+
+            {showAll && (
+        <section className="train-results">
+          <div className="results-heading">
+            <div>
+              <h3>All trains</h3>
+              <p>{allTrains.length} trains in the system</p>
+            </div>
+          </div>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th align="left">Train No.</th>
+                <th align="left">Name</th>
+                <th align="left">Type</th>
+                <th align="left">From</th>
+                <th align="left">Departs</th>
+                <th align="left">To</th>
+                <th align="left">Arrives</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allTrains.map((t) => (
+                <tr key={t.train_id}>
+                  <td>{t.train_number}</td>
+                  <td>{t.train_name}</td>
+                  <td>{t.train_type}</td>
+                  <td>{t.from_station}</td>
+                  <td>{t.departure_time}</td>
+                  <td>{t.to_station}</td>
+                  <td>{t.arrival_time}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
+
 
       <section className="train-results">
         <div className="results-heading">

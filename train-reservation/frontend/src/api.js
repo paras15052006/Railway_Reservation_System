@@ -11,6 +11,7 @@ async function request(url, method = "GET", body) {
 }
 
 export const getStations = () => request("/api/stations");
+export const getAllTrains = () => request("/api/trains");
 export const register = (p) => request("/api/passengers", "POST", p);
 export const login = (email) =>
   request("/api/passengers/login", "POST", { email });
