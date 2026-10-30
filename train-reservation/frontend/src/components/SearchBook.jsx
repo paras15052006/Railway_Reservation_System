@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { getStations, searchTrains, bookTicket } from "../api";
 import "./SearchBook.css";
 
+const today = new Date().toLocaleDateString("en-CA");
+
 export default function SearchBook({ passenger }) {
   const [stations, setStations] = useState([]);
   const [src, setSrc] = useState("");
@@ -12,6 +14,8 @@ export default function SearchBook({ passenger }) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookingId, setBookingId] = useState(null);
+
+  const [searched, setSearched] = useState(false);
 
   useEffect(() => {
     getStations()
@@ -30,19 +34,24 @@ export default function SearchBook({ passenger }) {
       return;
     }
 
+        if (date < today) {
+      setMessage("Journey date cannot be in the past.");
+      return;
+    }
+
     setLoading(true);
     setMessage("");
     setBookingId(null);
 
-    try {
+        try {
       const results = await searchTrains(src, dest, date);
       setTrains(results);
+      setSearched(true);
     } catch (err) {
       setTrains([]);
+      setSearched(false);
       setMessage(err.message || "Unable to search trains. Please try again.");
     } finally {
-      setLoading(false);
-    }
   };
 
   const book = async (schedule_id) => {
@@ -130,6 +139,7 @@ export default function SearchBook({ passenger }) {
               <span className="field-icon">▦</span>
               <input
                 type="date"
+                 min={today}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
@@ -176,11 +186,19 @@ export default function SearchBook({ passenger }) {
           )}
         </div>
 
-        {!loading && trains.length === 0 && !message && (
+       {!loading && !searched && trains.length === 0 && !message && (
           <div className="empty-trains">
             <div className="empty-train-icon">🚉</div>
             <h3>Ready for your next journey?</h3>
             <p>Enter your source, destination and date to find your train.</p>
+          </div>
+        )}
+
+        {!loading && searched && trains.length === 0 && !message && (
+          <div className="empty-trains">
+            <div className="empty-train-icon">🚉</div>
+            <h3>No trains available</h3>
+            <p>No trains run on this route for the selected date. Try another date or route.</p>
           </div>
         )}
 
@@ -267,4 +285,5 @@ export default function SearchBook({ passenger }) {
       </section>
     </div>
   );
+}
 }
