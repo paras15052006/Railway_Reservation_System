@@ -54,6 +54,8 @@ export default function SearchBook({ passenger }) {
       setSearched(false);
       setMessage(err.message || "Unable to search trains. Please try again.");
     } finally {
+      setLoading(false);
+    }
   };
 
   const book = async (schedule_id) => {
@@ -349,5 +351,4 @@ export default function SearchBook({ passenger }) {
       </section>
     </div>
   );
-}
 }
